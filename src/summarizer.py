@@ -67,16 +67,11 @@ def summarize_email(email_data):
         print(f"Error summarizing email: {e}")
         return None
     
-def format_response(response):
-    today = datetime.now().strftime("%Y-%m-%d")
-    header = f"**Emails daily summary for {today}**"
-    
+def format_response(response, section):
     formatted_output = []
-    formatted_output.append(f"📬 {header}")
-    formatted_output.append("=" * 50)
     
     # Urgent Emails Section
-    if 'urgent_emails' in response and response['urgent_emails']:
+    if 'urgent_emails' in response and response['urgent_emails'] and section == 'urgent_emails':
         formatted_output.append(f"\n🚨 URGENT ({len(response['urgent_emails'])}):")
         formatted_output.append("-" * 30)
         for i, email in enumerate(response['urgent_emails'], 1):
@@ -89,7 +84,7 @@ def format_response(response):
             formatted_output.append("")
     
     # General Emails Section
-    if 'general_emails' in response:
+    if 'general_emails' in response and section == 'general_emails':
         digest = response['general_emails']
         
         # High Priority
@@ -128,7 +123,7 @@ def format_response(response):
                 formatted_output.append("")
     
     # Next Steps Section
-    if 'next_steps' in response and response['next_steps']:
+    if 'next_steps' in response and response['next_steps'] and section == 'next_steps':
         formatted_output.append(f"\n✅ NEXT STEPS:")
         formatted_output.append("-" * 15)
         for i, step in enumerate(response['next_steps'], 1):
